@@ -3,12 +3,12 @@ const helper = require('../helper');
 const config = require('../config');
 
 
-//GET
+//GET all PCs
 async function getMultiple(page = 1){
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
     `SELECT id, hostname, huid, ip, os, version, uptime, created_at
-    FROM inventory LIMIT ?,?`, 
+    FROM inventory ORDER BY created_at DESC LIMIT ?,?`, 
     [offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
@@ -23,7 +23,7 @@ async function getMultiple(page = 1){
 module.exports = {
   getMultiple
 }
-//POST
+//POST a new PC
 async function create(pc){
   const result = await db.query(
     `INSERT INTO inventory 
@@ -49,4 +49,33 @@ async function create(pc){
 module.exports = {
   getMultiple,
   create
+}
+
+// PUT
+async function update(hostname, pc){
+  const result = await db.query(
+    `UPDATE inventory 
+    SET huid=?, ip=?, 
+    os=?, version=?, uptime=?
+    WHERE hostname=?`, 
+    [
+      pc.huid, pc.ip,
+      pc.os, pc.version,
+      pc.uptime, hostname
+    ]
+  );
+
+  let message = 'Error in updating pc';
+
+  if (result.affectedRows) {
+    message = 'Pc updated successfully';
+  }
+
+  return {message};
+}
+
+module.exports = {
+  getMultiple,
+  create,
+  update
 }

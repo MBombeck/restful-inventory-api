@@ -2,19 +2,19 @@ const express = require('express');
 const router = express.Router();
 const pc = require('../services/pc.js');
 
-/* GET pc. */
+/* GET */
 router.get('/', async function(req, res, next) {
   try {
     res.json(await pc.getMultiple(req.query.page));
   } catch (err) {
-    console.error(`Error while getting Pcs `, err.message);
+    console.error(`Error while getting PCs `, err.message);
     next(err);
   }
 });
 
 module.exports = router;
 
-/* POST pc */
+/* POST */
 router.post('/', async function(req, res, next) {
     try {
       res.json(await pc.create(req.body));
@@ -25,3 +25,13 @@ router.post('/', async function(req, res, next) {
   });
   
   module.exports = router;
+
+/* PUT */
+router.put('/:hostname', async function(req, res, next) {
+    try {
+      res.json(await pc.update(req.params.hostname, req.body));
+    } catch (err) {
+      console.error(`Error while updating pc`, err.message);
+      next(err);
+    }
+  });
