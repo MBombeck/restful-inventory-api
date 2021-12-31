@@ -2,7 +2,6 @@ const db = require('./db');
 const helper = require('../helper');
 const config = require('../config');
 
-
 //GET all PCs
 async function getMultiple(page = 1){
   const offset = helper.getOffset(page, config.listPerPage);
@@ -50,7 +49,6 @@ module.exports = {
   getMultiple,
   create
 }
-<<<<<<< HEAD
 
 // PUT
 async function update(hostname, pc){
@@ -80,5 +78,4 @@ module.exports = {
   create,
   update
 }
-=======
->>>>>>> ed47eeff55b64beaa8a13e4e96110018f1775b03
+

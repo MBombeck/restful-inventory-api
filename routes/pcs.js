@@ -2,12 +2,8 @@ const express = require('express');
 const router = express.Router();
 const pc = require('../services/pc.js');
 
-<<<<<<< HEAD
-/* GET */
-=======
 /* GET all PC's from database. */
 /* use '/pcs?page=2' to browse */
->>>>>>> ed47eeff55b64beaa8a13e4e96110018f1775b03
 router.get('/', async function(req, res, next) {
   try {
     res.json(await pc.getMultiple(req.query.page));
@@ -19,11 +15,8 @@ router.get('/', async function(req, res, next) {
 
 module.exports = router;
 
-<<<<<<< HEAD
-/* POST */
-=======
+
 /* POST a new PC to inventory */
->>>>>>> ed47eeff55b64beaa8a13e4e96110018f1775b03
 router.post('/', async function(req, res, next) {
     try {
       res.json(await pc.create(req.body));
@@ -34,7 +27,6 @@ router.post('/', async function(req, res, next) {
   });
   
   module.exports = router;
-<<<<<<< HEAD
 
 /* PUT */
 router.put('/:hostname', async function(req, res, next) {
@@ -45,5 +37,3 @@ router.put('/:hostname', async function(req, res, next) {
       next(err);
     }
   });
-=======
->>>>>>> ed47eeff55b64beaa8a13e4e96110018f1775b03
