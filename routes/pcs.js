@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const pc = require('../services/pc.js');
 
-/* GET */
+/* GET all PC's from database. */
+/* use '/pcs?page=2' to browse */
 router.get('/', async function(req, res, next) {
   try {
     res.json(await pc.getMultiple(req.query.page));
@@ -14,7 +15,8 @@ router.get('/', async function(req, res, next) {
 
 module.exports = router;
 
-/* POST */
+
+/* POST a new PC to inventory */
 router.post('/', async function(req, res, next) {
     try {
       res.json(await pc.create(req.body));
