@@ -3,7 +3,7 @@ const helper = require('../helper');
 const config = require('../config');
 
 
-//GET
+//GET all PCs
 async function getMultiple(page = 1){
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
@@ -23,7 +23,7 @@ async function getMultiple(page = 1){
 module.exports = {
   getMultiple
 }
-//POST
+//POST a new PC
 async function create(pc){
   const result = await db.query(
     `INSERT INTO inventory 
@@ -50,6 +50,7 @@ module.exports = {
   getMultiple,
   create
 }
+<<<<<<< HEAD
 
 // PUT
 async function update(hostname, pc){
@@ -79,3 +80,5 @@ module.exports = {
   create,
   update
 }
+=======
+>>>>>>> ed47eeff55b64beaa8a13e4e96110018f1775b03
