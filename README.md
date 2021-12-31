@@ -1,4 +1,4 @@
-# Restful Inventary API
+# Restful Inventory API
 
 Simple restful api to build a computer inventory
 
