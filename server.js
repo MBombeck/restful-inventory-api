@@ -10,6 +10,7 @@ const app = express();
 const pcRouter = require('./routes/pcs');
 const config = require('./config/config');
 
+// Basic Auth handler middleware
 app.use(
   basicAuth({
     users: { [config.user]: config.password },
