@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const basicAuth = require('express-basic-auth');
 
 const app = express();
-const port = process.env.PORT || 3000;
-const basicAuth = require('express-basic-auth');
 const pcRouter = require('./routes/pcs');
 const config = require('./config');
 
@@ -34,6 +33,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json({ message: err.message });
 });
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+app.listen(config.port, () => {
+  console.log(`App listening at http://localhost:${config.port}`);
 });
