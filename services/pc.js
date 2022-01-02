@@ -39,7 +39,7 @@ async function create(pc) {
 
   if (result.affectedRows) {
     message = 'pc created successfully';
-    logger.debug('New inventory item created:', pc.hostname);
+    logger.info('New inventory item created:', pc.hostname);
   }
 
   return { message };
@@ -64,7 +64,7 @@ async function update(hostname, pc) {
 
   if (result.affectedRows) {
     message = 'Pc updated successfully';
-    logger.debug('Inventory item updated:', pc.hostname);
+    logger.info('Inventory item updated:', pc.hostname);
   }
 
   return { message };
