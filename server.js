@@ -1,6 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
+const log4js = require('log4js');
+
+const logger = log4js.getLogger();
+logger.level = 'debug';
 
 const app = express();
 const pcRouter = require('./routes/pcs');
@@ -34,5 +38,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(config.port, () => {
-  console.log(`App listening at http://localhost:${config.port}`);
+  logger.debug(`App listening at http://localhost:${config.port}`);
 });

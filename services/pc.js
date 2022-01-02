@@ -1,6 +1,9 @@
+const log4js = require('log4js');
 const db = require('./db');
 const helper = require('../helper');
 const config = require('../config/config');
+
+const logger = log4js.getLogger();
 
 // GET all PCs
 async function getMultiple(page = 1) {
@@ -36,6 +39,7 @@ async function create(pc) {
 
   if (result.affectedRows) {
     message = 'pc created successfully';
+    logger.debug('New inventory item created:', pc.hostname);
   }
 
   return { message };
@@ -60,6 +64,7 @@ async function update(hostname, pc) {
 
   if (result.affectedRows) {
     message = 'Pc updated successfully';
+    logger.debug('Inventory item updated:', pc.hostname);
   }
 
   return { message };

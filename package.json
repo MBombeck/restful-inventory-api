@@ -13,6 +13,7 @@
     "body-parser": "^1.19.1",
     "express": "^4.17.2",
     "express-basic-auth": "^1.2.1",
+    "log4js": "^6.3.0",
     "mysql2": "^2.3.3"
   },
   "devDependencies": {
