@@ -2,38 +2,34 @@ const db = require('./db');
 const helper = require('../helper');
 const config = require('../config');
 
-//GET all PCs
-async function getMultiple(page = 1){
+// GET all PCs
+async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
     `SELECT id, hostname, huid, ip, os, version, uptime, created_at
-    FROM inventory ORDER BY created_at DESC LIMIT ?,?`, 
+    FROM inventory ORDER BY created_at DESC LIMIT ?,?`,
     [offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
-  const meta = {page};
+  const meta = { page };
 
   return {
     data,
-    meta
-  }
+    meta,
+  };
 }
 
 module.exports = {
-  getMultiple
-}
-//POST a new PC
-async function create(pc){
+  getMultiple,
+};
+// POST a new PC
+async function create(pc) {
   const result = await db.query(
     `INSERT INTO inventory 
     (hostname, huid, ip, os, version, uptime) 
     VALUES 
-    (?, ?, ?, ?, ?, ?)`, 
-    [
-      pc.hostname, pc.huid, pc.ip,
-      pc.os, pc.version,
-      pc.uptime
-    ]
+    (?, ?, ?, ?, ?, ?)`,
+    [pc.hostname, pc.huid, pc.ip, pc.os, pc.version, pc.uptime]
   );
 
   let message = 'Error in creating pc';
@@ -42,26 +38,22 @@ async function create(pc){
     message = 'pc created successfully';
   }
 
-  return {message};
+  return { message };
 }
 
 module.exports = {
   getMultiple,
-  create
-}
+  create,
+};
 
 // PUT
-async function update(hostname, pc){
+async function update(hostname, pc) {
   const result = await db.query(
     `UPDATE inventory 
     SET huid=?, ip=?, 
     os=?, version=?, uptime=?
-    WHERE hostname=?`, 
-    [
-      pc.huid, pc.ip,
-      pc.os, pc.version,
-      pc.uptime, hostname
-    ]
+    WHERE hostname=?`,
+    [pc.huid, pc.ip, pc.os, pc.version, pc.uptime, hostname]
   );
 
   let message = 'Error in updating pc';
@@ -70,12 +62,11 @@ async function update(hostname, pc){
     message = 'Pc updated successfully';
   }
 
-  return {message};
+  return { message };
 }
 
 module.exports = {
   getMultiple,
   create,
-  update
-}
-
+  update,
+};

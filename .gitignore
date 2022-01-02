@@ -1,8 +1,5 @@
 # Logs
-<<<<<<< HEAD
 config.js
-=======
->>>>>>> 879edb97a3868a4117392ef6ae4dcd9b11c14a4a
 logs
 *.log
 npm-debug.log*
@@ -128,8 +125,6 @@ dist
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-<<<<<<< HEAD
 .pnp.*
-=======
-.pnp.*
->>>>>>> 879edb97a3868a4117392ef6ae4dcd9b11c14a4a
+package-lock.json*
+package.json*
