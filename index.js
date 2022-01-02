@@ -4,7 +4,7 @@ const basicAuth = require('express-basic-auth');
 
 const app = express();
 const pcRouter = require('./routes/pcs');
-const config = require('./config');
+const config = require('./config/config');
 
 app.use(
   basicAuth({

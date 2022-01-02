@@ -8,7 +8,9 @@ const config = {
     database: env.DB_NAME || 'inventory',
   },
   listPerPage: env.LIST_PER_PAGE || 10,
-  password: 'password',
+  user: env.AUTH_USER || 'test',
+  password: env.AUTH_PW || 'test',
+  port: env.PORT || 3000,
 };
 
 module.exports = config;

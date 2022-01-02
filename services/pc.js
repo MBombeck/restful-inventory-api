@@ -1,6 +1,6 @@
 const db = require('./db');
 const helper = require('../helper');
-const config = require('../config');
+const config = require('../config/config');
 
 // GET all PCs
 async function getMultiple(page = 1) {
