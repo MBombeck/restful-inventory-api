@@ -5,7 +5,6 @@ const config = require('../config/config');
 // GET all PCs
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
-  console.log(offset, config.listPerPage);
   const rows = await db.query(
     `SELECT id, hostname, huid, ip, os, version, uptime, created_at
     FROM inventory ORDER BY created_at DESC LIMIT ?,?`,
