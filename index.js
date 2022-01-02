@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 app.use('/pcs', pcRouter);
 
-/* Error handler middleware */
+// Error handler middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   console.error(err.message, err.stack);
