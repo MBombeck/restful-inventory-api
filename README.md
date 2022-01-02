@@ -9,6 +9,7 @@ Simple restful api to build a computer inventory
 * mysql2
 * body-parser
 * express-basic-auth
+* log4js
  
 ## API-Documentation
 
