@@ -64,7 +64,7 @@ async function update(hostname, pc) {
 
   if (result.affectedRows) {
     message = 'Pc updated successfully';
-    logger.info('Inventory item updated:', pc.hostname);
+    logger.info('Inventory item updated:', hostname);
   }
 
   return { message };
