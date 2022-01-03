@@ -8,6 +8,7 @@ logger.level = 'debug';
 logger.debug(`Debugging mode active`);
 
 const app = express();
+const cors = require('cors');
 const pcRouter = require('./routes/pcs');
 const config = require('./config/config');
 
@@ -18,6 +19,9 @@ app.use(
     challenge: true, // <--- needed to actually show the login dialog!
   })
 );
+
+// Use CORS
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(
