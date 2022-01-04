@@ -1,2 +1,30 @@
-$postParams = @{hostname='L11Test-99009';huid='p29smmemembnsd929299';ip='10.10.10.10';os='Windows 11';version='11.2022';uptime='42'}
-Invoke-WebRequest -Uri http://localhost:3000/pcs -Method POST -Body $postParams
+# Config
+$username = 'test'
+$password = 'test'
+$url = 'https://restful-inventory.bombeck.io/pcs'
+
+# Basic Auth
+$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$password)))
+# IP
+$SourceAddress = (Test-Connection -ComputerName $env:computername -count 1).IPV4Address.ipaddressTOstring
+# OS 
+$os = (Get-WmiObject win32_operatingsystem).caption
+# OS Version
+$version = (Get-WmiObject win32_operatingsystem).version
+# Uptime
+$uptime = (Get-Date) - (gcim Win32_OperatingSystem).LastBootUpTime | Select-Object -Expand TotalMinutes -OutVariable TotalMinutes
+$uptime = [math]::Round($uptime)
+# HUID   
+$uuid= (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID
+
+# Daten für Create und Update
+$daten_update = @{ huid="$uuid";ip="$SourceAddress";os="$os";version="$version";uptime="$uptime"}
+$daten_create = @{ hostname="$env:computername";huid="$uuid";ip="$SourceAddress";os="$os";version="$version";uptime="$uptime"}
+
+# Update inventory
+Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $url/$env:computername -Method Put -Body $daten_update -ContentType "application/x-www-form-urlencoded" | Select-Object -Expand message -OutVariable message
+if($message -eq "Pc updated successfully") {
+} else {
+# Create inventory
+Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $url -Method Post -Body $daten_create
+}
