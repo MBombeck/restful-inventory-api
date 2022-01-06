@@ -71,14 +71,14 @@ http://localhost:3000/v1/inventory/L11TEST9900051
 // POST /v1/inventory/
 http://localhost:3000/v1/inventory/
 ```
-|  Field 	|  Description 	|
-|---	|---	|
-|  Hostname 	|   Systemname	|
-|  uuid 	|   Hardware unique ID 	|
-|  IP 	|   local IP	|
-|  OS 	|   OS-Name	|
-|  Version 	|   OS-Version	|
-|  Uptime 	|   current uptime	|
+|  Field 	|  Description 	|  Required 	|
+|---	|---	|---	|
+|  Hostname 	|   Systemname	| X |
+|  uuid 	|   Hardware unique ID 	| |
+|  IP 	|   local IP	| |
+|  OS 	|   OS-Name	||
+|  Version 	|   OS-Version	||
+|  Uptime 	|   current uptime	||
 ``` json
 {
     "message": "Inventory item created successfully"
@@ -90,13 +90,13 @@ http://localhost:3000/v1/inventory/
 // PUT /inventory/$HOSTNAME
 http://localhost:3000/v1/inventory/L11TEST9900051
 ```
-|  Field 	|  Description 	|
-|---	|---	|
-|  uuid 	|   Hardware unique ID 	|
-|  IP 	|   local IP	|
-|  OS 	|   OS-Name	|
-|  Version 	|   OS-Version	|
-|  Uptime 	|   current uptime	|
+|  Field 	|  Description 	|  Required 	|
+|---	|---	| ---	|
+|  uuid 	|   Hardware unique ID 	||
+|  IP 	|   local IP	||
+|  OS 	|   OS-Name	||
+|  Version 	|   OS-Version	||
+|  Uptime 	|   current uptime	||
 ``` json
 {
     "message": "Inventory item updated successfully"
