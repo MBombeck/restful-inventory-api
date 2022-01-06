@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const pc = require('../services/requestService.js');
+const pc = require('../services/inventoryService.js');
 
 /* GET all PC's from database. */
 /* use '/v1/inventory?page=2' to browse */
