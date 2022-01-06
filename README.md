@@ -52,7 +52,7 @@ http://localhost:3000/pcs/
 ```
 // return msg
 {
-    "message": "pc created successfully"
+    "message": "inventory item created successfully"
 }
 ```
 
@@ -71,7 +71,20 @@ http://localhost:3000/pcs/L11TEST00211
 ```
 // return msg
 {
-    "message": "pc updated successfully"
+    "message": "inventory item updated successfully"
+}
+```
+
+### Delete a inventory entry
+```
+// DELETE /pcs/$HOSTNAME
+http://localhost:3000/pcs/1
+```
+
+```
+// return msg
+{
+    "message": "inventory item deleted successfully"
 }
 ```
 
