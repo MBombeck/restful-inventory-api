@@ -14,12 +14,12 @@ $version = (Get-WmiObject win32_operatingsystem).version
 # Uptime
 $uptime = (Get-Date) - (gcim Win32_OperatingSystem).LastBootUpTime | Select-Object -Expand TotalMinutes -OutVariable TotalMinutes
 $uptime = [math]::Round($uptime)
-# HUID   
+# uuid   
 $uuid= (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID
 
 # Daten für Create und Update
-$daten_update = @{ huid="$uuid";ip="$SourceAddress";os="$os";version="$version";uptime="$uptime"}
-$daten_create = @{ hostname="$env:computername";huid="$uuid";ip="$SourceAddress";os="$os";version="$version";uptime="$uptime"}
+$daten_update = @{ uuid="$uuid";ip="$SourceAddress";os="$os";version="$version";uptime="$uptime"}
+$daten_create = @{ hostname="$env:computername";uuid="$uuid";ip="$SourceAddress";os="$os";version="$version";uptime="$uptime"}
 
 # Update inventory
 Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $url/$env:computername -Method Put -Body $daten_update -ContentType "application/x-www-form-urlencoded" | Select-Object -Expand message -OutVariable message

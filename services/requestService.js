@@ -9,7 +9,7 @@ const logger = log4js.getLogger();
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
-    `SELECT id, hostname, huid, ip, os, version, uptime, created_at
+    `SELECT id, hostname, uuid, ip, os, version, uptime, created_at
     FROM inventory ORDER BY created_at DESC LIMIT ?,?`,
     [offset, config.listPerPage]
   );
@@ -29,10 +29,10 @@ module.exports = {
 async function create(pc) {
   const result = await db.query(
     `INSERT INTO inventory 
-    (hostname, huid, ip, os, version, uptime) 
+    (hostname, uuid, ip, os, version, uptime) 
     VALUES 
     (?, ?, ?, ?, ?, ?)`,
-    [pc.hostname, pc.huid, pc.ip, pc.os, pc.version, pc.uptime]
+    [pc.hostname, pc.uuid, pc.ip, pc.os, pc.version, pc.uptime]
   );
 
   let message = 'Error in creating pc';
@@ -54,10 +54,10 @@ module.exports = {
 async function update(hostname, pc) {
   const result = await db.query(
     `UPDATE inventory 
-    SET huid=?, ip=?, 
+    SET uuid=?, ip=?, 
     os=?, version=?, uptime=?
     WHERE hostname=?`,
-    [pc.huid, pc.ip, pc.os, pc.version, pc.uptime, hostname]
+    [pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, hostname]
   );
 
   let message = 'Error in updating pc';

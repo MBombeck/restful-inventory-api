@@ -15,8 +15,8 @@ Simple restful api to build a computer inventory
 
 ### Get the inventory
 ```
-// GET /pcs/
-http://localhost:3000/inventory/
+// GET /v1/inventory/
+http://localhost:3000/v1/inventory/
 ```
 ```
 // returns the complete inventory
@@ -25,7 +25,7 @@ http://localhost:3000/inventory/
 {
 "id": 12,
 "hostname": "L11PAVA-99009",
-"huid": "p29smmemembnsd929299",
+"uuid": "p29smmemembnsd929299",
 "ip": "10.10.10.10",
 "os": "Windows 11",
 "version": "11.2022",
@@ -38,13 +38,13 @@ http://localhost:3000/inventory/
 
 ### Create a new inventory entry
 ```
-// POST /inventory/
-http://localhost:3000/inventory/
+// POST /v1/inventory/
+http://localhost:3000/v1/inventory/
 ```
 |  Field 	|  Description 	|
 |---	|---	|
 |  Hostname 	|   Systemname	|
-|  HUID 	|   Hardware unique ID 	|
+|  uuid 	|   Hardware unique ID 	|
 |  IP 	|   local IP	|
 |  OS 	|   OS-Name	|
 |  Version 	|   OS-Version	|
@@ -52,18 +52,18 @@ http://localhost:3000/inventory/
 ```
 // return msg
 {
-    "message": "inventory item created successfully"
+    "message": "Inventory item created successfully"
 }
 ```
 
 ### Update a inventory entry
 ```
 // PUT /inventory/$HOSTNAME
-http://localhost:3000/inventory/L11TEST00211
+http://localhost:3000/v1/inventory/L11TEST00211
 ```
 |  Field 	|  Description 	|
 |---	|---	|
-|  HUID 	|   Hardware unique ID 	|
+|  uuid 	|   Hardware unique ID 	|
 |  IP 	|   local IP	|
 |  OS 	|   OS-Name	|
 |  Version 	|   OS-Version	|
@@ -71,20 +71,20 @@ http://localhost:3000/inventory/L11TEST00211
 ```
 // return msg
 {
-    "message": "inventory item updated successfully"
+    "message": "Inventory item updated successfully"
 }
 ```
 
 ### Delete a inventory entry
 ```
 // DELETE /inventory/$HOSTNAME
-http://localhost:3000/inventory/1
+http://localhost:3000/v1/inventory/1
 ```
 
 ```
 // return msg
 {
-    "message": "inventory item deleted successfully"
+    "message": "Inventory item deleted successfully"
 }
 ```
 

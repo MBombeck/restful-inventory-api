@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `inventory` (
   `id` int(11) NOT NULL,
   `hostname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `huid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `uuid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ip` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `os` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `inventory` (
 -- Daten für Tabelle `inventory`
 --
 
-INSERT INTO `inventory` (`id`, `hostname`, `huid`, `ip`, `os`, `version`, `uptime`, `created_at`, `updated_at`) VALUES
+INSERT INTO `inventory` (`id`, `hostname`, `uuid`, `ip`, `os`, `version`, `uptime`, `created_at`, `updated_at`) VALUES
 <<<<<<< HEAD
 (1, 'L11PAVA-990001', '4323123213', '10.14.210.143', 'Windows 10', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
 (2, 'L11PAVA-990002', '2fv23erfsdffsdf', '10.31.221.31', 'Windows 3.11', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
