@@ -23,7 +23,7 @@ $daten_create = @{ hostname="$env:computername";uuid="$uuid";ip="$SourceAddress"
 
 # Update inventory
 Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $url/$env:computername -Method Put -Body $daten_update -ContentType "application/x-www-form-urlencoded" | Select-Object -Expand message -OutVariable message
-if($message -eq "Pc updated successfully") {
+if($message -eq "Inventory item updated successfully") {
 } else {
 # Create inventory
 Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $url -Method Post -Body $daten_create
