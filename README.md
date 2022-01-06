@@ -21,19 +21,40 @@ http://localhost:3000/v1/inventory/
 ```
 // returns the complete inventory
 {
-"data": [
+   "data":[
+      {
+         "id":12,
+         "hostname":"L11PAVA-99009",
+         "uuid":"p29smmemembnsd929299",
+         "ip":"10.10.10.10",
+         "os":"Windows 11",
+         "version":"11.2022",
+         "uptime":"42",
+         "created_at":"2021-12-31T19:45:22.000Z"
+      },
+      ...
+}   
+```
+### Get single inventory item
+```
+// GET /v1/inventory/$hostname
+http://localhost:3000/v1/inventory/L11TEST9900051
+```
+```
 {
-"id": 12,
-"hostname": "L11PAVA-99009",
-"uuid": "p29smmemembnsd929299",
-"ip": "10.10.10.10",
-"os": "Windows 11",
-"version": "11.2022",
-"uptime": "42",
-"created_at": "2021-12-31T19:45:22.000Z"
-},
-...
-]
+   "data":[
+      {
+         "id":36,
+         "hostname":"L11TEST9900051",
+         "uuid":"FMD62L6VDOALA612GVD",
+         "ip":"10.0.1.10",
+         "os":"Windows 11",
+         "version":"1999",
+         "uptime":"2",
+         "updated_at":"2022-01-06T16:39:50.000Z"
+      }
+   ]
+}
 ```
 
 ### Create a new inventory entry
@@ -59,7 +80,7 @@ http://localhost:3000/v1/inventory/
 ### Update a inventory entry
 ```
 // PUT /inventory/$HOSTNAME
-http://localhost:3000/v1/inventory/L11TEST00211
+http://localhost:3000/v1/inventory/L11TEST9900051
 ```
 |  Field 	|  Description 	|
 |---	|---	|
@@ -78,7 +99,7 @@ http://localhost:3000/v1/inventory/L11TEST00211
 ### Delete a inventory entry
 ```
 // DELETE /inventory/$HOSTNAME
-http://localhost:3000/v1/inventory/1
+http://localhost:3000/v1/inventory/L11TEST9900051
 ```
 
 ```
