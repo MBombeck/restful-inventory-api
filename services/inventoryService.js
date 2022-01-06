@@ -22,9 +22,19 @@ async function getMultiple(page = 1) {
   };
 }
 
-module.exports = {
-  getMultiple,
-};
+async function getSingleItem(hostname) {
+  const rows = await db.query(
+    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at
+    FROM inventory WHERE hostname=?`,
+    [hostname]
+  );
+  const data = helper.emptyOrRows(rows);
+
+  return {
+    data,
+  };
+}
+
 // POST a new PC
 async function create(pc) {
   const result = await db.query(
@@ -44,11 +54,6 @@ async function create(pc) {
 
   return { message };
 }
-
-module.exports = {
-  getMultiple,
-  create,
-};
 
 // Update inventory item via PUT-Request
 async function update(hostname, pc) {
@@ -70,12 +75,6 @@ async function update(hostname, pc) {
   return { message };
 }
 
-module.exports = {
-  getMultiple,
-  create,
-  update,
-};
-
 // DELETE inventory item
 async function remove(hostname) {
   const result = await db.query(`DELETE FROM inventory WHERE hostname=?`, [
@@ -94,6 +93,7 @@ async function remove(hostname) {
 
 module.exports = {
   getMultiple,
+  getSingleItem,
   create,
   update,
   remove,

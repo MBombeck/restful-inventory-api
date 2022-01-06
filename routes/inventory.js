@@ -1,24 +1,32 @@
 const express = require('express');
 const log4js = require('log4js');
-const config = require('../config/config');
+// const config = require('../config/config');
 
 const logger = log4js.getLogger();
 
 const router = express.Router();
 const pc = require('../services/inventoryService.js');
 
-/* GET all PC's from database. */
+/* GET complete inventory from database. */
 /* use '/v1/inventory?page=2' to browse */
 router.get('/', async (req, res, next) => {
   try {
     res.json(await pc.getMultiple(req.query.page));
   } catch (err) {
-    logger.error(`Error while getting inventory items `, err.message);
+    logger.error(`Error while getting inventory items`, err.message);
     next(err);
   }
 });
 
-module.exports = router;
+// GET single item
+router.get('/:hostname', async (req, res, next) => {
+  try {
+    res.json(await pc.getSingleItem(req.params.hostname));
+  } catch (err) {
+    logger.error(`Error while getting inventory item`, err.message);
+    next(err);
+  }
+});
 
 // POST
 router.post('/', async (req, res, next) => {
@@ -29,8 +37,6 @@ router.post('/', async (req, res, next) => {
     next(err);
   }
 });
-
-module.exports = router;
 
 // PUT
 router.put('/:hostname', async (req, res, next) => {
@@ -51,3 +57,5 @@ router.delete('/:id', async (req, res, next) => {
     next(err);
   }
 });
+
+module.exports = router;
