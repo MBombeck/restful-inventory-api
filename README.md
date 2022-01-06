@@ -18,35 +18,44 @@ Simple restful api to build a computer inventory
 // GET /v1/inventory/
 http://localhost:3000/v1/inventory/
 ```
-```
-// returns the complete inventory
+``` json
 {
    "data":[
       {
-         "id":12,
-         "hostname":"L11PAVA-99009",
-         "uuid":"p29smmemembnsd929299",
+         "id":10,
+         "hostname":"L11TEST9900051",
+         "uuid":"deff0438-0776-4e75-b36d-da6eb2c0946e",
          "ip":"10.10.10.10",
          "os":"Windows 11",
          "version":"11.2022",
          "uptime":"42",
          "created_at":"2021-12-31T19:45:22.000Z"
       },
-      ...
-}   
+      {
+         "id":11,
+         "hostname":"L11TEST9900052",
+         "uuid":"5b77cf72-21e3-4c99-aefd-28c01aaca516",
+         "ip":"192.168.0.211",
+         "os":"Windows 11",
+         "version":"10.0.2022",
+         "uptime":"42",
+         "created_at":"2021-11-12T11:15:02.000Z"
+      },
+      ]
+   }
 ```
 ### Get single inventory item
 ```
 // GET /v1/inventory/$hostname
 http://localhost:3000/v1/inventory/L11TEST9900051
 ```
-```
+``` json
 {
    "data":[
       {
          "id":36,
          "hostname":"L11TEST9900051",
-         "uuid":"FMD62L6VDOALA612GVD",
+         "uuid":"deff0438-0776-4e75-b36d-da6eb2c0946e",
          "ip":"10.0.1.10",
          "os":"Windows 11",
          "version":"1999",
@@ -70,8 +79,7 @@ http://localhost:3000/v1/inventory/
 |  OS 	|   OS-Name	|
 |  Version 	|   OS-Version	|
 |  Uptime 	|   current uptime	|
-```
-// return msg
+``` json
 {
     "message": "Inventory item created successfully"
 }
@@ -89,8 +97,7 @@ http://localhost:3000/v1/inventory/L11TEST9900051
 |  OS 	|   OS-Name	|
 |  Version 	|   OS-Version	|
 |  Uptime 	|   current uptime	|
-```
-// return msg
+``` json
 {
     "message": "Inventory item updated successfully"
 }
@@ -102,8 +109,7 @@ http://localhost:3000/v1/inventory/L11TEST9900051
 http://localhost:3000/v1/inventory/L11TEST9900051
 ```
 
-```
-// return msg
+``` json
 {
     "message": "Inventory item deleted successfully"
 }
