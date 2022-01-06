@@ -1,4 +1,8 @@
 const express = require('express');
+const log4js = require('log4js');
+const config = require('../config/config');
+
+const logger = log4js.getLogger();
 
 const router = express.Router();
 const pc = require('../services/inventoryService.js');
@@ -9,7 +13,7 @@ router.get('/', async (req, res, next) => {
   try {
     res.json(await pc.getMultiple(req.query.page));
   } catch (err) {
-    console.error(`Error while getting inventory items `, err.message);
+    logger.error(`Error while getting inventory items `, err.message);
     next(err);
   }
 });
@@ -21,7 +25,7 @@ router.post('/', async (req, res, next) => {
   try {
     res.json(await pc.create(req.body));
   } catch (err) {
-    console.error(`Error while creating inventory item`, err.message);
+    logger.error(`Error while creating inventory item`, err.message);
     next(err);
   }
 });
@@ -33,7 +37,7 @@ router.put('/:hostname', async (req, res, next) => {
   try {
     res.json(await pc.update(req.params.hostname, req.body));
   } catch (err) {
-    console.error(`Error while updating inventory item`, err.message);
+    logger.error(`Error while updating inventory item`, err.message);
     next(err);
   }
 });
@@ -43,7 +47,7 @@ router.delete('/:id', async (req, res, next) => {
   try {
     res.json(await pc.remove(req.params.id));
   } catch (err) {
-    console.error(`Error while deleting inventory item`, err.message);
+    logger.error(`Error while deleting inventory item`, err.message);
     next(err);
   }
 });

@@ -9,8 +9,8 @@ const logger = log4js.getLogger();
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
-    `SELECT id, hostname, uuid, ip, os, version, uptime, created_at
-    FROM inventory ORDER BY created_at DESC LIMIT ?,?`,
+    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at
+    FROM inventory ORDER BY updated_at DESC LIMIT ?,?`,
     [offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
@@ -77,14 +77,16 @@ module.exports = {
 };
 
 // DELETE inventory item
-async function remove(id) {
-  const result = await db.query(`DELETE FROM inventory WHERE id=?`, [id]);
+async function remove(hostname) {
+  const result = await db.query(`DELETE FROM inventory WHERE hostname=?`, [
+    hostname,
+  ]);
 
   let message = 'Error in deleting PC';
 
   if (result.affectedRows) {
     message = 'Inventory item deleted successfully';
-    logger.info('Inventory item deleted:', id);
+    logger.info('Inventory item deleted:', hostname);
   }
 
   return { message };
