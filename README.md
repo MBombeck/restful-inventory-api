@@ -66,7 +66,7 @@ http://localhost:3000/v1/inventory/L11TEST9900051
 }
 ```
 
-### Create a new inventory entry
+### Create a new inventory item
 ```
 // POST /v1/inventory/
 http://localhost:3000/v1/inventory/
@@ -85,7 +85,7 @@ http://localhost:3000/v1/inventory/
 }
 ```
 
-### Update a inventory entry
+### Update a inventory item
 ```
 // PUT /inventory/$HOSTNAME
 http://localhost:3000/v1/inventory/L11TEST9900051
@@ -103,7 +103,7 @@ http://localhost:3000/v1/inventory/L11TEST9900051
 }
 ```
 
-### Delete a inventory entry
+### Delete a inventory item
 ```
 // DELETE /inventory/$HOSTNAME
 http://localhost:3000/v1/inventory/L11TEST9900051
