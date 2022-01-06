@@ -95,11 +95,6 @@ Contributors names and contact info
 Marc-André Bombeck
 [@MBombeck](https://twitter.com/MBombeck)
 
-## Version History
-
-* 0.1
-    * Initial Release
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
