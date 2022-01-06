@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 01. Jan 2022 um 00:15
+-- Erstellungszeit: 06. Jan 2022 um 23:38
 -- Server-Version: 5.5.68-MariaDB
 -- PHP-Version: 7.3.7
 
@@ -36,22 +36,15 @@ CREATE TABLE `inventory` (
   `os` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `uptime` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp(6) NULL DEFAULT '0000-00-00 00:00:00.000000'
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Daten für Tabelle `inventory`
 --
 
-INSERT INTO `inventory` (`id`, `hostname`, `uuid`, `ip`, `os`, `version`, `uptime`, `created_at`, `updated_at`) VALUES
-(1, 'L11PAVA-990001', '4323123213', '10.14.210.143', 'Windows 10', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
-(2, 'L11PAVA-990002', '2fv23erfsdffsdf', '10.31.221.31', 'Windows 3.11', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
-(3, 'L11PAVA-990003', 'dasdsad122123', '10.5.23.243', 'Windows 10', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
-(4, 'L11PAVA-990004', 'h5dfsgdfujjj', '10.14.11.2', 'Windows 98SE', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
-(5, 'L11PAVA-990005', 'hfghfh454dfgdfg', '10.22.4.23', 'Windows 11', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
-(6, 'L11PAVA-990006', 'dfgdfjkkjjiuy575', '10.102.4.32', 'Windows 10', '1.000', '55', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000'),
-(7, 'L11PAVA-990007', 'fdgdfgdfg34567', '10.99.23.42', 'Windows 8', '1.000', '23', '2021-12-31 15:04:03', '2021-12-31 15:04:03.000000');
+INSERT INTO `inventory` (`id`, `hostname`, `uuid`, `ip`, `os`, `version`, `uptime`, `updated_at`) VALUES
+(1, 'L11TEST-000001', 'deff0438-0776-4e75-b36d-da6eb2c0946e', '10.14.210.143', 'Windows 11', '10.2000', '120', '2021-12-31 23:00:03');
 
 --
 -- Indizes der exportierten Tabellen
@@ -61,7 +54,8 @@ INSERT INTO `inventory` (`id`, `hostname`, `uuid`, `ip`, `os`, `version`, `uptim
 -- Indizes für die Tabelle `inventory`
 --
 ALTER TABLE `inventory`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `hostname` (`hostname`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen
@@ -71,7 +65,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT für Tabelle `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
