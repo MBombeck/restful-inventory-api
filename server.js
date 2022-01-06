@@ -9,7 +9,7 @@ logger.debug(`Debugging mode active`);
 
 const app = express();
 const cors = require('cors');
-const pcRouter = require('./routes/pcs');
+const pcRouter = require('./routes/inventory');
 const config = require('./config/config');
 
 // Basic Auth handler middleware
@@ -30,11 +30,12 @@ app.use(
   })
 );
 
+// OK-Route
 app.get('/', (req, res) => {
   res.json({ message: 'ok' });
 });
 
-app.use('/pcs', pcRouter);
+app.use('/v1/inventory', pcRouter);
 
 // Error handler middleware
 app.use((err, req, res, next) => {
@@ -43,6 +44,7 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json({ message: err.message });
 });
 
+// Start the Server
 app.listen(config.port, () => {
   logger.info(`App listening at http://localhost:${config.port}`);
 });

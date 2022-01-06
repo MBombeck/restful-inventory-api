@@ -1,11 +1,11 @@
 const log4js = require('log4js');
-const db = require('./db');
-const helper = require('../helper');
+const db = require('./SQLService');
+const helper = require('./helperService');
 const config = require('../config/config');
 
 const logger = log4js.getLogger();
 
-// GET all PCs
+// GET complete inventory
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
@@ -38,7 +38,7 @@ async function create(pc) {
   let message = 'Error in creating pc';
 
   if (result.affectedRows) {
-    message = 'pc created successfully';
+    message = 'Inventory item created successfully';
     logger.info('New inventory item created:', pc.hostname);
   }
 
@@ -50,7 +50,7 @@ module.exports = {
   create,
 };
 
-// PUT
+// Update inventory item via PUT-Request
 async function update(hostname, pc) {
   const result = await db.query(
     `UPDATE inventory 
@@ -63,7 +63,7 @@ async function update(hostname, pc) {
   let message = 'Error in updating pc';
 
   if (result.affectedRows) {
-    message = 'Pc updated successfully';
+    message = 'Inventory item updated successfully';
     logger.info('Inventory item updated:', hostname);
   }
 
@@ -76,7 +76,7 @@ module.exports = {
   update,
 };
 
-// DELETE
+// DELETE inventory item
 async function remove(id) {
   const result = await db.query(`DELETE FROM inventory WHERE id=?`, [id]);
 

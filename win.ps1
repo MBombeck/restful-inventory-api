@@ -1,7 +1,7 @@
 # Config
 $username = 'test'
 $password = 'test'
-$url = 'https://restful-inventory.bombeck.io/pcs'
+$url = 'http://localhost:3000/v1/inventory'
 
 # Basic Auth
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$password)))

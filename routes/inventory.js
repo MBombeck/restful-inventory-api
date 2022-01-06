@@ -1,10 +1,10 @@
 const express = require('express');
 
 const router = express.Router();
-const pc = require('../services/pc.js');
+const pc = require('../services/requestService.js');
 
 /* GET all PC's from database. */
-/* use '/pcs?page=2' to browse */
+/* use '/v1/inventory?page=2' to browse */
 router.get('/', async (req, res, next) => {
   try {
     res.json(await pc.getMultiple(req.query.page));

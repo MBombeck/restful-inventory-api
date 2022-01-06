@@ -16,7 +16,7 @@ Simple restful api to build a computer inventory
 ### Get the inventory
 ```
 // GET /pcs/
-http://localhost:3000/pcs/
+http://localhost:3000/inventory/
 ```
 ```
 // returns the complete inventory
@@ -38,8 +38,8 @@ http://localhost:3000/pcs/
 
 ### Create a new inventory entry
 ```
-// POST /pcs/
-http://localhost:3000/pcs/
+// POST /inventory/
+http://localhost:3000/inventory/
 ```
 |  Field 	|  Description 	|
 |---	|---	|
@@ -58,8 +58,8 @@ http://localhost:3000/pcs/
 
 ### Update a inventory entry
 ```
-// PUT /pcs/$HOSTNAME
-http://localhost:3000/pcs/L11TEST00211
+// PUT /inventory/$HOSTNAME
+http://localhost:3000/inventory/L11TEST00211
 ```
 |  Field 	|  Description 	|
 |---	|---	|
@@ -77,8 +77,8 @@ http://localhost:3000/pcs/L11TEST00211
 
 ### Delete a inventory entry
 ```
-// DELETE /pcs/$HOSTNAME
-http://localhost:3000/pcs/1
+// DELETE /inventory/$HOSTNAME
+http://localhost:3000/inventory/1
 ```
 
 ```
