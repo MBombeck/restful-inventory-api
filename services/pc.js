@@ -75,3 +75,24 @@ module.exports = {
   create,
   update,
 };
+
+// DELETE
+async function remove(id) {
+  const result = await db.query(`DELETE FROM inventory WHERE id=?`, [id]);
+
+  let message = 'Error in deleting PC';
+
+  if (result.affectedRows) {
+    message = 'Inventory item deleted successfully';
+    logger.info('Inventory item deleted:', id);
+  }
+
+  return { message };
+}
+
+module.exports = {
+  getMultiple,
+  create,
+  update,
+  remove,
+};
