@@ -5,7 +5,7 @@ const log4js = require('log4js');
 
 const logger = log4js.getLogger();
 logger.level = 'debug';
-logger.debug(`Debugging mode active`);
+logger.debug(`Debug mode active`);
 
 const app = express();
 const cors = require('cors');
@@ -17,6 +17,15 @@ app.use(
   basicAuth({
     users: { [config.user]: config.password },
     challenge: true, // <--- needed to actually show the login dialog!
+  })
+);
+
+// Use http logger
+app.use(
+  log4js.connectLogger(logger, {
+    level: 'debug',
+    format: (req, res, format) =>
+      format(`:remote-addr :method :url ${JSON.stringify(req.body)}`),
   })
 );
 
