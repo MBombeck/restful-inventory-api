@@ -49,7 +49,7 @@ app.use('/v1/inventory', pcRouter);
 // Error handler middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  console.error(err.message, err.stack);
+  logger.error(err.message, err.stack);
   res.status(statusCode).json({ message: err.message });
 });
 
