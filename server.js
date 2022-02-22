@@ -12,20 +12,17 @@ const cors = require('cors');
 const pcRouter = require('./routes/inventory');
 const config = require('./config/config');
 
+// Add Access-Control-Allow-Origin 
+app.all('*', function(req, res, next) {
+  res.set('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // Basic Auth handler middleware
 app.use(
   basicAuth({
     users: { [config.user]: config.password },
     challenge: true, // <--- needed to actually show the login dialog!
-  })
-);
-
-// Use http logger
-app.use(
-  log4js.connectLogger(logger, {
-    level: 'debug',
-    format: (req, res, format) =>
-      format(`:remote-addr :method :url ${JSON.stringify(req.body)}`),
   })
 );
 
@@ -36,6 +33,15 @@ app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: true,
+  })
+);
+
+// Use http logger
+app.use(
+  log4js.connectLogger(logger, {
+    level: 'debug',
+    format: (req, res, format) =>
+      format(`:remote-addr :method :url ${JSON.stringify(req.body)}`),
   })
 );
 
