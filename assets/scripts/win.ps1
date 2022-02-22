@@ -46,15 +46,16 @@ $ip =(Test-NetConnection 8.8.8.8 -informationLevel "Detailed").SourceAddress.IPA
 # Get external IP - !!!! Use your own script and your own server here!!! -
 $externalip =(Invoke-WebRequest -uri "http://ifconfig.me/ip").Content
 
-
 # Gateway // NextHop
 $gateway = (test-NetConnection 8.8.8.8 -informationLevel "Detailed").NetRoute.NextHop
-# DNS-Server (not finished)
-$dns-server = '8.8.8.8'
+
+# DNS-Server 
+$interfacealias =(Test-NetConnection 8.8.8.8 -informationLevel "Detailed").InterfaceAlias
+$dnsserver=(Get-DnsClientServerAddress -InterfaceAlias "$interfacealias" -AddressFamily ipv4).ServerAddresses
 
 # Data for Create and Update
-$daten_update = @{ uuid="$uuid";ip="$ip";os="$os";version="$version";uptime="$uptime";cpuname="$cpuname";cpuload="$cpuload";ram="$ram";freemem="$freemem";logonserver="$logonserver";loginuser="$loginuser";vendor="$vendor";hardwarename="$hardwarename";biosfirmaretype="$biosfirmaretype";hdd="$hdd";hddsize="$hddsize";hddfree="$hddfree";externalip="$externalip";gateway="$gateway";dns-server="dns-server"}
-$daten_create = @{ hostname="$env:computername";uuid="$uuid";ip="$ip";os="$os";version="$version";uptime="$uptime";cpuname="$cpuname";cpuload="$cpuload";ram="$ram";freemem="$freemem";logonserver="$logonserver";loginuser="$loginuser";vendor="$vendor";hardwarename="$hardwarename";biosfirmaretype="$biosfirmaretype";hdd="$hdd";hddsize="$hddsize";hddfree="$hddfree";externalip="$externalip";gateway="$gateway";dns-server="dns-server"}
+$daten_update = @{ uuid="$uuid";ip="$ip";os="$os";version="$version";uptime="$uptime";cpuname="$cpuname";cpuload="$cpuload";ram="$ram";freemem="$freemem";logonserver="$logonserver";loginuser="$loginuser";vendor="$vendor";hardwarename="$hardwarename";biosfirmaretype="$biosfirmaretype";hdd="$hdd";hddsize="$hddsize";hddfree="$hddfree";externalip="$externalip";gateway="$gateway";dns-server="$dnsserver"}
+$daten_create = @{ hostname="$env:computername";uuid="$uuid";ip="$ip";os="$os";version="$version";uptime="$uptime";cpuname="$cpuname";cpuload="$cpuload";ram="$ram";freemem="$freemem";logonserver="$logonserver";loginuser="$loginuser";vendor="$vendor";hardwarename="$hardwarename";biosfirmaretype="$biosfirmaretype";hdd="$hdd";hddsize="$hddsize";hddfree="$hddfree";externalip="$externalip";gateway="$gateway";dns-server="$dnsserver"}
 # Update inventory
 Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $url/$env:computername -Method Put -Body $daten_update -ContentType "application/x-www-form-urlencoded" | Select-Object -Expand message -OutVariable message
 if($message -eq "Inventory item updated successfully") {
