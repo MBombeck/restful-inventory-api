@@ -23,7 +23,7 @@ $cpuload = (Get-CimInstance -Class Win32_Processor).LoadPercentage
 # ram total
 $ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).sum /1gb
 # free ram
-$freemem = [math]::Round((Get-ciminstance Win32_OperatingSystem).FreePhysicalMemory*1024/1gb,2)
+$freemem = [math]::Round((Get-ciminstance Win32_OperatingSystem).FreePhysicalMemory*1024/1gb,0)
 # logon server
 $logonserver = (Get-ComputerInfo).LogonServer -replace '\\',''
 # logon user
