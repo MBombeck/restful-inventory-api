@@ -1,15 +1,26 @@
 # Restful API Inventory Windows Powershell Script 
 # Requirements: Powershell 7 
+# Changes to Invoke-RestMethod in PowerShell 7
 # New parameter for Invoke-RestMethod in PowerShell 7: StatusCodeVariable
 
 # Config
 $username = 'test'
 $password = 'test'
 $url = 'http://localhost:3000/v1/inventory'
+$hosttest = 'localhost'
 $scriptdirectory = 'C:\Restful API Inventory'
 
+# Test connection 
+$connection = Test-Connection -ComputerName $hosttest -Count 1 -Quiet
+Test-Connection -ComputerName $hosttest -Count 1 -Quiet
+If ($connection -eq $true) {
+ $con= 'is available'
+}
+ElseIf ($connection -eq $false) {
+ $con = 'is unavailable'
+}
 # Create folder if not exists
-if (!(Test-Path -path $scriptpath)) {
+if (!(Test-Path -path $scriptdirectory)) {
     New-Item -ItemType directory -Path  "$scriptdirectory"
 } 
 # Funtion to check if value is empty
@@ -176,11 +187,12 @@ Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Ur
 }
 # Write log
 Write-Output "Restful API Inventory | Date: $(Get-Date)
+Host $hosttest is $con
 Hostname:$env:computername | UUID:$uuid
 API-Response: $ResponseFromApi 
 Server-Response: $ResponseFromServer" > $scriptdirectory\logfile.txt
 
-# Create windows task with "system" user | at 8am, repeat every 12 hours for unlimited time 
+# Create windows task with "system" user | at 8am, repeat every 12 hours for unlimited time | Mode: silent
 $Action = New-ScheduledTaskAction -Execute 'C:\Program Files\PowerShell\7\pwsh.exe' -Argument '-NonInteractive -NoLogo -NoProfile -File "C:\Restful API Inventory\restfulapiwindowsclient.ps1"'
 $Trigger = New-ScheduledTaskTrigger -once -At 8:00am -RepetitionInterval (New-TimeSpan -Hours 12)
 $Settings = New-ScheduledTaskSettingsSet
