@@ -7,10 +7,19 @@
 $username = 'test'
 $password = 'test'
 $url = 'http://localhost:3000/v1/inventory'
+# Host to test the internet connection to API 
 $hosttest = 'localhost'
+# Scriptdirectory
 $scriptdirectory = 'C:\Restful API Inventory'
+# Day(s) to delete logfiles
+[int] $days = "-7" 
+# Default parameter encoding
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
 
-# Test connection 
+# Pause 1-60 secs
+start-sleep -Seconds (1..60 | get-random) 
+
+# Test connection to domain
 $connection = Test-Connection -ComputerName $hosttest -Count 1 -Quiet
 Test-Connection -ComputerName $hosttest -Count 1 -Quiet
 If ($connection -eq $true) {
@@ -19,6 +28,7 @@ If ($connection -eq $true) {
 ElseIf ($connection -eq $false) {
  $con = 'is unavailable'
 }
+
 # Create folder if not exists
 if (!(Test-Path -path $scriptdirectory)) {
     New-Item -ItemType directory -Path  "$scriptdirectory"
@@ -27,14 +37,14 @@ if (!(Test-Path -path $scriptdirectory)) {
 function checkvalueisempty($checkvar){
 if ([string]::IsNullOrWhiteSpace($checkvar) -eq $true ) {$checkvar = 'Empty value from system' }
 return $checkvar }
-# Funtion to check format 
+# Function to check format 
 # String format a-zA-z0-9 - _ | minimum 3 characters
 # On wrong format = output "Wrong value from system"
 function checkformatstring($chkformatstring){ 
 if ($chkformatstring -match '^(\w){2,}')  
 { } else { $chkformatstring = 'Wrong value from system' }
 return $chkformatstring }
-# Funtion to check format 
+# Function to check format 
 # Numbers format 0-9 - _ | minimum 1 character
 # On wrong format = output "Wrong value from system"
 function checkformatnumbers($chkformatnumbers){ 
@@ -91,7 +101,8 @@ $cpuload = checkvalueisempty $cpuload
 checkformatnumbers $cpuload
 $cpuload = checkformatnumbers $cpuload
 # ram total
-$ram = (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).sum /1gb
+$ram = [math]::Round((Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).sum /1gb)
+Write-Host "$ram"
 checkvalueisempty $ram 
 $ram = checkvalueisempty $ram
 checkformatnumbers $ram
@@ -157,7 +168,7 @@ $ip = checkvalueisempty $ip
 checkipv4 $ip
 $ip = checkipv4 $ip
 # Get external IP - !Use this server on your own risk!
-$externalip =(Invoke-WebRequest -uri "http://ifconfig.me/ip").Content
+$externalip =(Invoke-WebRequest -UseBasicParsing -uri "http://ifconfig.me/ip").Content
 checkvalueisempty $externalip
 $externalip = checkvalueisempty $externalip
 checkipv4 $externalip
@@ -170,7 +181,7 @@ checkipv4 $gateway
 $gateway = checkipv4 $gateway
 # DNS-Server 
 $interfacealias =(Test-NetConnection 8.8.8.8 -informationLevel "Detailed").InterfaceAlias
-$dnsserver=(Get-DnsClientServerAddress -InterfaceAlias "$interfacealias" -AddressFamily ipv4).ServerAddresses
+$dnsserver=(Get-DnsClientServerAddress -InterfaceAlias "$interfacealias" -AddressFamily ipv4).ServerAddresses | Select -First 1
 checkvalueisempty $dnsserver
 $dnsserver = checkvalueisempty $dnsserver
 checkipv4 $dnsserver
@@ -185,15 +196,52 @@ if($ResponseFromApi -eq "Inventory item updated successfully") {
 # Create inventory
 Invoke-Restmethod -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Uri $url -StatusCodeVariable ResponseFromServer -Method Post -Body $data_create -ContentType "application/x-www-form-urlencoded" | Select-Object -Expand message -OutVariable ResponseFromApi
 }
+
+# Check log path
+$logpath = "$scriptdirectory\Logs"
+If(!(test-path $logpath))
+{
+      New-Item -ItemType Directory -Force -Path $logpath
+}
+
 # Write log
 Write-Output "Restful API Inventory | Date: $(Get-Date)
-Host $hosttest is $con
+Host $hosttest $con
 Hostname:$env:computername | UUID:$uuid
 API-Response: $ResponseFromApi 
-Server-Response: $ResponseFromServer" > $scriptdirectory\logfile.txt
+Server-Response: $ResponseFromServer 
+
+Collected Data:
+Hostname                $env:computername
+UUID                    $uuid
+IP                      $ip
+OS                      $os
+Version                 $version
+Uptime                  $uptime
+CPUName                 $cpuname
+CPULoad                 $cpuload
+RAM                     $ram
+Freemem                 $freemem
+Logonserver             $logonserver
+Loginuser               $loginuser
+Vendor                  $vendor
+Hardwarename            $hardwarename
+Biosfirmaretype         $biosfirmaretype
+HDD                     $hdd
+HDDSize                 $hddsize
+HDDFree                 $hddfree
+Externalip              $externalip
+Gateway                 $gateway
+DNSServer               $dnsserver
+
+">> $scriptdirectory\logs\logfile-$(Get-Date -Format "yyyy-MM-dd").txt
+
+# Delete logs older than $days
+$logFiles = "*.txt"
+Get-ChildItem $scriptdirectory -Include $logFiles -Recurse | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays($days)} | Remove-Item
 
 # Create windows task with "system" user | at 8am, repeat every 12 hours for unlimited time | Mode: silent
-$Action = New-ScheduledTaskAction -Execute 'C:\Program Files\PowerShell\7\pwsh.exe' -Argument '-NonInteractive -NoLogo -NoProfile -File "C:\Restful API Inventory\restfulapiwindowsclient.ps1"'
+$Action = New-ScheduledTaskAction -Execute 'C:\Program Files\PowerShell\7\pwsh.exe' -Argument "-NonInteractive -NoLogo -NoProfile -File $scriptdirectory\restfulapiwindowsclient.ps1"
 $Trigger = New-ScheduledTaskTrigger -once -At 8:00am -RepetitionInterval (New-TimeSpan -Hours 12)
 $Settings = New-ScheduledTaskSettingsSet
 $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Settings $Settings
