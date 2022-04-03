@@ -24,7 +24,7 @@ async function getMultiple(page = 1) {
 
 async function getSingleItem(hostname) {
   const rows = await db.query(
-    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at
+    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gatewaym, dnsserver
     FROM inventory WHERE hostname=?`,
     [hostname]
   );
@@ -39,10 +39,10 @@ async function getSingleItem(hostname) {
 async function create(pc) {
   const result = await db.query(
     `INSERT INTO inventory 
-    (hostname, uuid, ip, os, version, uptime) 
+    (hostname, uuid, ip, os, version, uptime, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver) 
     VALUES 
-    (?, ?, ?, ?, ?, ?)`,
-    [pc.hostname, pc.uuid, pc.ip, pc.os, pc.version, pc.uptime]
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)`,
+    [pc.hostname, pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, pc.cpuname, pc.cpuload, pc.ram, pc.freemem, pc.logonserver, pc.loginuser, pc.vendor, pc.hardwarename, pc.biosfirmwaretype, pc.hdd, pc.hddsize, pc.hddfree, pc.externalip, pc.gateway, pc.dnsserver]
   );
 
   let message = 'Error in creating pc';
@@ -60,9 +60,16 @@ async function update(hostname, pc) {
   const result = await db.query(
     `UPDATE inventory 
     SET uuid=?, ip=?, 
-    os=?, version=?, uptime=?
+    os=?, version=?, uptime=?,
+    cpuname=?, cpuload=?,
+    ram=?, freemem=?, logonserver=?,
+    loginuser=?, vendor=?, hardwarename=?,
+    biosfirmwaretype=?, hdd=?,
+    hddsize=?, hddfree=?,
+    externalip=?, gateway=?,
+    dnsserver=?,
     WHERE hostname=?`,
-    [pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, hostname]
+    [pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, pc.cpuname, pc.cpuload, pc.ram, pc.freemem, pc.logonserver, pc.loginuser, pc.vendor, pc.hardwarename, pc.biosfirmwaretype, pc.hdd, pc.hddsize, pc.hddfree, pc.externalip, pc.gateway, pc.dnsserver, hostname]
   );
 
   let message = 'Error in updating pc';
