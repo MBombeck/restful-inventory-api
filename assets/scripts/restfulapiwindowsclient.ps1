@@ -6,7 +6,7 @@
 # Config
 $username = 'test'
 $password = 'test'
-$url = 'http://localhost:3000/v1/inventory'
+$url = 'https://restful-inventory.bombeck.io/'
 # Host to test the internet connection to API 
 $hosttest = 'localhost'
 # Scriptdirectory
