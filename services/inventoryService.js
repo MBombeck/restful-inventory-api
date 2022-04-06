@@ -24,7 +24,7 @@ async function getMultiple(page = 1) {
 
 async function getSingleItem(hostname) {
   const rows = await db.query(
-    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gatewaym, dnsserver
+    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver
     FROM inventory WHERE hostname=?`,
     [hostname]
   );
@@ -41,7 +41,7 @@ async function create(pc) {
     `INSERT INTO inventory 
     (hostname, uuid, ip, os, version, uptime, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver) 
     VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)`,
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [pc.hostname, pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, pc.cpuname, pc.cpuload, pc.ram, pc.freemem, pc.logonserver, pc.loginuser, pc.vendor, pc.hardwarename, pc.biosfirmwaretype, pc.hdd, pc.hddsize, pc.hddfree, pc.externalip, pc.gateway, pc.dnsserver]
   );
 
