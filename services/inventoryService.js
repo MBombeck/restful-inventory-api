@@ -67,7 +67,7 @@ async function update(hostname, pc) {
     biosfirmwaretype=?, hdd=?,
     hddsize=?, hddfree=?,
     externalip=?, gateway=?,
-    dnsserver=?,
+    dnsserver=?
     WHERE hostname=?`,
     [pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, pc.cpuname, pc.cpuload, pc.ram, pc.freemem, pc.logonserver, pc.loginuser, pc.vendor, pc.hardwarename, pc.biosfirmwaretype, pc.hdd, pc.hddsize, pc.hddfree, pc.externalip, pc.gateway, pc.dnsserver, hostname]
   );
