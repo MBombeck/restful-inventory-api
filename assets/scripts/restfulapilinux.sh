@@ -9,6 +9,9 @@ username='test'
 password='test'
 url='https://localhost:3000/v1/inventory'
 
+# Sleep
+sleep $[ ( $RANDOM % 190 )  + 1 ]s
+
 # Get data
 hostname=$(hostname | tr [:lower:] [:upper:])
 ip=$(ip route get 8.8.8.8 | sed -n '/src/{s/.*src *\([^ ]*\).*/\1/p;q}')
