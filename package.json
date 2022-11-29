@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-basic-auth": "^1.2.1",
-    "log4js": "^6.3.0",
+    "log4js": "^6.7.1",
     "mysql2": "^2.3.3"
   },
   "devDependencies": {
