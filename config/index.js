@@ -15,6 +15,7 @@ const config = {
   user: env.AUTH_USER || 'test',
   password: env.AUTH_PW || 'test',
   port: parseInt(env.PORT, 10) || 3000,
+  debug: env.DEBUG === 'true',
 };
 
 module.exports = config;
