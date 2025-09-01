@@ -1,6 +1,5 @@
 const express = require('express');
 const log4js = require('log4js');
-// const config = require('../config/config');
 
 const logger = log4js.getLogger();
 
@@ -49,9 +48,9 @@ router.put('/:hostname', async (req, res, next) => {
 });
 
 // DELETE
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:hostname', async (req, res, next) => {
   try {
-    res.json(await pc.remove(req.params.id));
+    res.json(await pc.remove(req.params.hostname));
   } catch (err) {
     logger.error(`Error while deleting inventory item`, err.message);
     next(err);
