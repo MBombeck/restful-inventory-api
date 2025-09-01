@@ -4,11 +4,24 @@ const basicAuth = require('express-basic-auth');
 const log4js = require('log4js');
 
 const config = require('./config');
-const pcRouter = require('./routes/inventory');
+
+// Logger configuration with optional debug mode and file output
+log4js.configure({
+  appenders: {
+    out: { type: 'stdout' },
+    app: { type: 'file', filename: 'app.log' },
+  },
+  categories: {
+    default: { appenders: ['out', 'app'], level: config.debug ? 'debug' : 'info' },
+  },
+});
 
 const logger = log4js.getLogger();
-logger.level = 'debug';
-logger.debug(`Debug mode active`);
+if (config.debug) {
+  logger.debug('Debug mode active');
+}
+
+const pcRouter = require('./routes/inventory');
 
 const app = express();
 
@@ -34,7 +47,7 @@ app.use(
 // HTTP request logging
 app.use(
   log4js.connectLogger(logger, {
-    level: 'debug',
+    level: config.debug ? 'debug' : 'info',
     format: (req, res, format) =>
       format(`:remote-addr :method :url ${JSON.stringify(req.body)}`),
   })

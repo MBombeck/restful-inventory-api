@@ -1,47 +1,78 @@
 const log4js = require('log4js');
 const db = require('./SQLService');
 const helper = require('./helperService');
-const config = require('../config');
 
 const logger = log4js.getLogger();
 
-// GET complete inventory
-async function getMultiple(page = 1) {
-  const pageNumber = parseInt(page, 10) || 1;
-  const offset = helper.getOffset(pageNumber, config.listPerPage);
-  const rows = await db.query(
-    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at
-    FROM inventory ORDER BY updated_at DESC LIMIT ?,?`,
-    [offset, config.listPerPage]
-  );
-  const data = helper.emptyOrRows(rows);
-  const meta = { page: pageNumber };
+const requiredFields = [
+  'hostname',
+  'uuid',
+  'ip',
+  'os',
+  'version',
+  'uptime',
+  'cpuname',
+  'cpuload',
+  'ram',
+  'freemem',
+  'logonserver',
+  'loginuser',
+  'vendor',
+  'hardwarename',
+  'biosfirmwaretype',
+  'hdd',
+  'hddsize',
+  'hddfree',
+  'externalip',
+  'gateway',
+  'dnsserver',
+];
 
-  return {
-    data,
-    meta,
-  };
+function validatePc(pc) {
+  const missing = requiredFields.filter((field) => pc[field] === undefined);
+  if (missing.length) {
+    const error = new Error(`Missing required fields: ${missing.join(', ')}`);
+    error.statusCode = 400;
+    throw error;
+  }
 }
 
-async function getSingleItem(hostname) {
+// GET complete inventory
+async function getAll() {
   const rows = await db.query(
-    `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver
-    FROM inventory WHERE hostname=?`,
+    `SELECT * FROM inventory ORDER BY id ASC`
+  );
+  const data = helper.emptyOrRows(rows);
+  return { data };
+}
+
+// GET single item by id
+async function getById(id) {
+  const rows = await db.query(
+    `SELECT * FROM inventory WHERE id=?`,
+    [id]
+  );
+  const data = helper.emptyOrRows(rows);
+  return { data };
+}
+
+// GET single item by hostname
+async function getByHostname(hostname) {
+  const rows = await db.query(
+    `SELECT * FROM inventory WHERE hostname=?`,
     [hostname]
   );
   const data = helper.emptyOrRows(rows);
-
-  return {
-    data,
-  };
+  return { data };
 }
 
 // POST a new PC
 async function create(pc) {
+  validatePc(pc);
   const result = await db.query(
-    `INSERT INTO inventory 
-    (hostname, uuid, ip, os, version, uptime, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver) 
-    VALUES 
+    `INSERT INTO inventory
+    (hostname, uuid, ip, os, version, uptime, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver)
+    VALUES
     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [pc.hostname, pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, pc.cpuname, pc.cpuload, pc.ram, pc.freemem, pc.logonserver, pc.loginuser, pc.vendor, pc.hardwarename, pc.biosfirmwaretype, pc.hdd, pc.hddsize, pc.hddfree, pc.externalip, pc.gateway, pc.dnsserver]
   );
@@ -58,9 +89,10 @@ async function create(pc) {
 
 // Update inventory item via PUT-Request
 async function update(hostname, pc) {
+  validatePc(pc);
   const result = await db.query(
-    `UPDATE inventory 
-    SET uuid=?, ip=?, 
+    `UPDATE inventory
+    SET uuid=?, ip=?,
     os=?, version=?, uptime=?,
     cpuname=?, cpuload=?,
     ram=?, freemem=?, logonserver=?,
@@ -100,8 +132,9 @@ async function remove(hostname) {
 }
 
 module.exports = {
-  getMultiple,
-  getSingleItem,
+  getAll,
+  getById,
+  getByHostname,
   create,
   update,
   remove,
