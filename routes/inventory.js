@@ -6,23 +6,32 @@ const logger = log4js.getLogger();
 const router = express.Router();
 const pc = require('../services/inventoryService.js');
 
-/* GET complete inventory from database. */
-/* use '/v1/inventory?page=2' to browse */
+/* GET complete inventory sorted by id. */
 router.get('/', async (req, res, next) => {
   try {
-    res.json(await pc.getMultiple(req.query.page));
+    res.json(await pc.getAll());
   } catch (err) {
     logger.error(`Error while getting inventory items`, err.message);
     next(err);
   }
 });
 
-// GET single item
-router.get('/:hostname', async (req, res, next) => {
+// GET single item by hostname
+router.get('/hostname/:hostname', async (req, res, next) => {
   try {
-    res.json(await pc.getSingleItem(req.params.hostname));
+    res.json(await pc.getByHostname(req.params.hostname));
   } catch (err) {
-    logger.error(`Error while getting inventory item`, err.message);
+    logger.error(`Error while getting inventory item by hostname`, err.message);
+    next(err);
+  }
+});
+
+// GET single item by id
+router.get('/:id(\\d+)', async (req, res, next) => {
+  try {
+    res.json(await pc.getById(req.params.id));
+  } catch (err) {
+    logger.error(`Error while getting inventory item by id`, err.message);
     next(err);
   }
 });

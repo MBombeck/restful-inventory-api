@@ -24,10 +24,10 @@ Configuration values can be supplied via environment variables or by editing `co
 | `DB_USER` | MySQL user | `root` |
 | `DB_PASSWORD` | MySQL password | `password` |
 | `DB_NAME` | Database name | `inventory` |
-| `LIST_PER_PAGE` | Pagination size | `10` |
 | `AUTH_USER` | Basic auth username | `test` |
 | `AUTH_PW` | Basic auth password | `test` |
 | `PORT` | Server port | `3000` |
+| `DEBUG` | Enable verbose logging | `false` |
 
 Initialise the database using the SQL script in `setup/db_setup.sql`.
 
@@ -59,13 +59,25 @@ docker-compose down
 All endpoints require HTTP basic authentication.
 
 ### `GET /v1/inventory`
-Return a paginated list of inventory items.
+Return the full inventory sorted by `id`.
 
-Query parameters:
-- `page` (optional) – page number starting at 1.
+```bash
+curl -u test:test http://localhost:3000/v1/inventory
+```
 
-### `GET /v1/inventory/:hostname`
-Retrieve a single inventory item by hostname.
+### `GET /v1/inventory/:id`
+Retrieve a single inventory item by numeric `id`.
+
+```bash
+curl -u test:test http://localhost:3000/v1/inventory/1
+```
+
+### `GET /v1/inventory/hostname/:hostname`
+Retrieve a single inventory item by `hostname`.
+
+```bash
+curl -u test:test http://localhost:3000/v1/inventory/hostname/PC-01
+```
 
 ### `POST /v1/inventory`
 Create a new inventory item. Example body:
