@@ -16,6 +16,16 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// GET hostnames sorted by latest update
+router.get('/hostnames', async (req, res, next) => {
+  try {
+    res.json(await pc.getHostnames());
+  } catch (err) {
+    logger.error(`Error while getting hostnames`, err.message);
+    next(err);
+  }
+});
+
 // GET single item by hostname
 router.get('/hostname/:hostname', async (req, res, next) => {
   try {

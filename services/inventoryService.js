@@ -66,6 +66,15 @@ async function getByHostname(hostname) {
   return { data };
 }
 
+// GET hostnames sorted by latest update
+async function getHostnames() {
+  const rows = await db.query(
+    `SELECT hostname, id, updated_at, ip, externalip, uptime FROM inventory ORDER BY updated_at DESC`
+  );
+  const data = helper.emptyOrRows(rows);
+  return { data };
+}
+
 // POST a new PC
 async function create(pc) {
   validatePc(pc);
@@ -135,6 +144,7 @@ module.exports = {
   getAll,
   getById,
   getByHostname,
+  getHostnames,
   create,
   update,
   remove,
