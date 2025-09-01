@@ -52,7 +52,8 @@ app.use('/v1/inventory', pcRouter);
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   logger.error(err.message, err.stack);
-  res.status(statusCode).json({ message: err.message });
+  const message = statusCode === 500 ? 'Internal Server Error' : err.message;
+  res.status(statusCode).json({ message });
 });
 
 // Start the Server
