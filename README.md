@@ -1,6 +1,7 @@
 # RESTful Inventory API
 
-A simple Node.js and Express based REST API for managing a computer inventory using a MySQL backend. The service exposes CRUD endpoints protected by HTTP basic authentication and responds with JSON.
+The RESTful Inventory API is a small, production-ready service for tracking computers and their attributes. Built with Node.js and Express, it stores data in MySQL and offers a clean REST interface secured with HTTP basic authentication. The project emphasises simplicity and best practices, making it easy to deploy and extend.
+
 
 ## Prerequisites
 
@@ -19,7 +20,7 @@ Configuration values can be supplied via environment variables or by editing `co
 
 | Variable | Description | Default |
 |---------|-------------|---------|
-| `DB_HOST` | MySQL host | `10.10.10.10` |
+| `DB_HOST` | MySQL host | `db` |
 | `DB_USER` | MySQL user | `root` |
 | `DB_PASSWORD` | MySQL password | `password` |
 | `DB_NAME` | Database name | `inventory` |
@@ -37,6 +38,21 @@ npm start
 ```
 
 The API will be available at `http://localhost:3000` by default.
+
+## Docker
+
+Run the API and a MySQL instance with a single command:
+
+```bash
+docker-compose up --build
+```
+
+The MySQL service initialises with `setup/db_setup.sql`. Stop the stack with `Ctrl+C` and remove containers using:
+
+```bash
+docker-compose down
+```
+
 
 ## API
 

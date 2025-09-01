@@ -1,8 +1,12 @@
 const { env } = process;
 
+/**
+ * Application configuration loaded from environment variables.
+ * Defaults are tuned for the Docker development environment.
+ */
 const config = {
   db: {
-    host: env.DB_HOST || '10.10.10.10',
+    host: env.DB_HOST || 'db',
     user: env.DB_USER || 'root',
     password: env.DB_PASSWORD || 'password',
     database: env.DB_NAME || 'inventory',
