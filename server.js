@@ -1,22 +1,16 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const cors = require('cors');
 const basicAuth = require('express-basic-auth');
 const log4js = require('log4js');
+
+const config = require('./config');
+const pcRouter = require('./routes/inventory');
 
 const logger = log4js.getLogger();
 logger.level = 'debug';
 logger.debug(`Debug mode active`);
 
 const app = express();
-const cors = require('cors');
-const pcRouter = require('./routes/inventory');
-const config = require('./config/config');
-
-// Add Access-Control-Allow-Origin 
-app.all('*', function(req, res, next) {
-  res.set('Access-Control-Allow-Origin', '*');
-  next();
-});
 
 // Basic Auth handler middleware
 app.use(
@@ -26,17 +20,18 @@ app.use(
   })
 );
 
-// Use CORS
+// Enable CORS
 app.use(cors());
 
-app.use(bodyParser.json());
+// Body parsing
+app.use(express.json());
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
   })
 );
 
-// Use http logger
+// HTTP request logging
 app.use(
   log4js.connectLogger(logger, {
     level: 'debug',
@@ -45,11 +40,12 @@ app.use(
   })
 );
 
-// OK-Route
+// Health check route
 app.get('/', (req, res) => {
   res.json({ message: 'ok' });
 });
 
+// API routes
 app.use('/v1/inventory', pcRouter);
 
 // Error handler middleware
