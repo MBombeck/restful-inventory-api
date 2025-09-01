@@ -1,20 +1,21 @@
 const log4js = require('log4js');
 const db = require('./SQLService');
 const helper = require('./helperService');
-const config = require('../config/config');
+const config = require('../config');
 
 const logger = log4js.getLogger();
 
 // GET complete inventory
 async function getMultiple(page = 1) {
-  const offset = helper.getOffset(page, config.listPerPage);
+  const pageNumber = parseInt(page, 10) || 1;
+  const offset = helper.getOffset(pageNumber, config.listPerPage);
   const rows = await db.query(
     `SELECT id, hostname, uuid, ip, os, version, uptime, updated_at
     FROM inventory ORDER BY updated_at DESC LIMIT ?,?`,
     [offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
-  const meta = { page };
+  const meta = { page: pageNumber };
 
   return {
     data,
