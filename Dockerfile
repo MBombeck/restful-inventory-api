@@ -6,7 +6,8 @@ WORKDIR /app
 
 # Install dependencies first for better caching
 COPY package*.json ./
-RUN npm install --production
+ENV NODE_ENV=production
+RUN npm ci --omit=dev --legacy-peer-deps --no-audit --fund=false
 
 # Copy application source
 COPY . .
