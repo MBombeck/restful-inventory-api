@@ -13,13 +13,19 @@ const pool = mysql.createPool({
 
 async function query(sql, params) {
   try {
-    const [results] = await pool.execute(sql, params);
+    // use text protocol to allow LIMIT placeholders and client-side parameter substitution
+    const [results] = await pool.query(sql, params);
     return results;
   } catch (err) {
     logger.error('Database query error', err);
     // Map known database errors to user-friendly messages
     if (err.code === 'ER_BAD_FIELD_ERROR') {
       const error = new Error('Invalid column name in query');
+      error.statusCode = 400;
+      throw error;
+    }
+    if (err.code === 'ER_WRONG_ARGUMENTS') {
+      const error = new Error('Incorrect number of parameters for SQL query');
       error.statusCode = 400;
       throw error;
     }

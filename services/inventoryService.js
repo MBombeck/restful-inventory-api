@@ -5,6 +5,39 @@ const config = require('../config');
 
 const logger = log4js.getLogger();
 
+const requiredFields = [
+  'hostname',
+  'uuid',
+  'ip',
+  'os',
+  'version',
+  'uptime',
+  'cpuname',
+  'cpuload',
+  'ram',
+  'freemem',
+  'logonserver',
+  'loginuser',
+  'vendor',
+  'hardwarename',
+  'biosfirmwaretype',
+  'hdd',
+  'hddsize',
+  'hddfree',
+  'externalip',
+  'gateway',
+  'dnsserver',
+];
+
+function validatePc(pc) {
+  const missing = requiredFields.filter((field) => pc[field] === undefined);
+  if (missing.length) {
+    const error = new Error(`Missing required fields: ${missing.join(', ')}`);
+    error.statusCode = 400;
+    throw error;
+  }
+}
+
 // GET complete inventory
 async function getMultiple(page = 1) {
   const pageNumber = parseInt(page, 10) || 1;
@@ -38,10 +71,11 @@ async function getSingleItem(hostname) {
 
 // POST a new PC
 async function create(pc) {
+  validatePc(pc);
   const result = await db.query(
-    `INSERT INTO inventory 
-    (hostname, uuid, ip, os, version, uptime, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver) 
-    VALUES 
+    `INSERT INTO inventory
+    (hostname, uuid, ip, os, version, uptime, cpuname, cpuload, ram, freemem, logonserver, loginuser, vendor, hardwarename, biosfirmwaretype, hdd, hddsize, hddfree, externalip, gateway, dnsserver)
+    VALUES
     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [pc.hostname, pc.uuid, pc.ip, pc.os, pc.version, pc.uptime, pc.cpuname, pc.cpuload, pc.ram, pc.freemem, pc.logonserver, pc.loginuser, pc.vendor, pc.hardwarename, pc.biosfirmwaretype, pc.hdd, pc.hddsize, pc.hddfree, pc.externalip, pc.gateway, pc.dnsserver]
   );
@@ -58,9 +92,10 @@ async function create(pc) {
 
 // Update inventory item via PUT-Request
 async function update(hostname, pc) {
+  validatePc(pc);
   const result = await db.query(
-    `UPDATE inventory 
-    SET uuid=?, ip=?, 
+    `UPDATE inventory
+    SET uuid=?, ip=?,
     os=?, version=?, uptime=?,
     cpuname=?, cpuload=?,
     ram=?, freemem=?, logonserver=?,
