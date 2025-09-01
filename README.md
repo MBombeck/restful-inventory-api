@@ -2,6 +2,7 @@
 
 The RESTful Inventory API is a small, production-ready service for tracking computers and their attributes. Built with Node.js and Express, it stores data in MySQL and offers a clean REST interface secured with HTTP basic authentication. The project emphasises simplicity and best practices, making it easy to deploy and extend.
 
+
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) v14 or newer
@@ -51,6 +52,7 @@ The MySQL service initialises with `setup/db_setup.sql`. Stop the stack with `Ct
 ```bash
 docker-compose down
 ```
+
 
 ## API
 
