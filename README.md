@@ -1,127 +1,80 @@
-# Restful Inventory API
+# RESTful Inventory API
 
-Simple restful api to build a computer inventory
+A simple Node.js and Express based REST API for managing a computer inventory using a MySQL backend. The service exposes CRUD endpoints protected by HTTP basic authentication and responds with JSON.
 
-## Getting Started
+## Prerequisites
 
-### Dependencies
+- [Node.js](https://nodejs.org/) v14 or newer
+- [MySQL](https://www.mysql.com/) database
 
-* mysql2
-* body-parser
-* express-basic-auth
-* log4js
- 
-## API-Documentation
+## Installation
 
-### Get the inventory
+```bash
+npm install
 ```
-// GET /v1/inventory/
-http://localhost:3000/v1/inventory/
+
+## Configuration
+
+Configuration values can be supplied via environment variables or by editing `config/index.js`.
+
+| Variable | Description | Default |
+|---------|-------------|---------|
+| `DB_HOST` | MySQL host | `10.10.10.10` |
+| `DB_USER` | MySQL user | `root` |
+| `DB_PASSWORD` | MySQL password | `password` |
+| `DB_NAME` | Database name | `inventory` |
+| `LIST_PER_PAGE` | Pagination size | `10` |
+| `AUTH_USER` | Basic auth username | `test` |
+| `AUTH_PW` | Basic auth password | `test` |
+| `PORT` | Server port | `3000` |
+
+Initialise the database using the SQL script in `setup/db_setup.sql`.
+
+## Running the server
+
+```bash
+npm start
 ```
-``` json
+
+The API will be available at `http://localhost:3000` by default.
+
+## API
+
+All endpoints require HTTP basic authentication.
+
+### `GET /v1/inventory`
+Return a paginated list of inventory items.
+
+Query parameters:
+- `page` (optional) – page number starting at 1.
+
+### `GET /v1/inventory/:hostname`
+Retrieve a single inventory item by hostname.
+
+### `POST /v1/inventory`
+Create a new inventory item. Example body:
+
+```json
 {
-   "data":[
-      {
-         "id":10,
-         "hostname":"L11TEST9900051",
-         "uuid":"deff0438-0776-4e75-b36d-da6eb2c0946e",
-         "ip":"10.10.10.10",
-         "os":"Windows 11",
-         "version":"11.2022",
-         "uptime":"42",
-         "created_at":"2021-12-31T19:45:22.000Z"
-      },
-      {
-         "id":11,
-         "hostname":"L11TEST9900052",
-         "uuid":"5b77cf72-21e3-4c99-aefd-28c01aaca516",
-         "ip":"192.168.0.211",
-         "os":"Windows 11",
-         "version":"10.0.2022",
-         "uptime":"42",
-         "created_at":"2021-11-12T11:15:02.000Z"
-      },
-      ]
-   }
-```
-### Get single inventory item
-```
-// GET /v1/inventory/$hostname
-http://localhost:3000/v1/inventory/L11TEST9900051
-```
-``` json
-{
-   "data":[
-      {
-         "id":36,
-         "hostname":"L11TEST9900051",
-         "uuid":"deff0438-0776-4e75-b36d-da6eb2c0946e",
-         "ip":"10.0.1.10",
-         "os":"Windows 11",
-         "version":"1999",
-         "uptime":"2",
-         "updated_at":"2022-01-06T16:39:50.000Z"
-      }
-   ]
+  "hostname": "PC-01",
+  "uuid": "deff0438-0776-4e75-b36d-da6eb2c0946e",
+  "ip": "10.0.0.5",
+  "os": "Windows 11",
+  "version": "11.2022",
+  "uptime": "42"
 }
 ```
 
-### Create a new inventory item
-```
-// POST /v1/inventory/
-http://localhost:3000/v1/inventory/
-```
-|  Field 	|  Description 	|  Required 	|
-|---	|---	|---	|
-|  Hostname 	|   Systemname	| X |
-|  uuid 	|   Hardware unique ID 	| |
-|  IP 	|   local IP	| |
-|  OS 	|   OS-Name	||
-|  Version 	|   OS-Version	||
-|  Uptime 	|   current uptime	||
-``` json
-{
-    "message": "Inventory item created successfully"
-}
-```
+### `PUT /v1/inventory/:hostname`
+Update an existing inventory item.
 
-### Update a inventory item
-```
-// PUT /inventory/$HOSTNAME
-http://localhost:3000/v1/inventory/L11TEST9900051
-```
-|  Field 	|  Description 	|  Required 	|
-|---	|---	| ---	|
-|  uuid 	|   Hardware unique ID 	||
-|  IP 	|   local IP	||
-|  OS 	|   OS-Name	||
-|  Version 	|   OS-Version	||
-|  Uptime 	|   current uptime	||
-``` json
-{
-    "message": "Inventory item updated successfully"
-}
-```
-
-### Delete a inventory item
-```
-// DELETE /inventory/$HOSTNAME
-http://localhost:3000/v1/inventory/L11TEST9900051
-```
-
-``` json
-{
-    "message": "Inventory item deleted successfully"
-}
-```
-
-## Authors
-
-Contributors names and contact info
-
-Marc-André Bombeck
-[@MBombeck](https://twitter.com/MBombeck)
+### `DELETE /v1/inventory/:hostname`
+Delete an inventory item.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) for details.
+
+## Author
+
+Marc-André Bombeck – [@MBombeck](https://twitter.com/MBombeck)
