@@ -17,7 +17,16 @@ async function query(sql, params) {
     return results;
   } catch (err) {
     logger.error('Database query error', err);
-    throw err;
+    // Map known database errors to user-friendly messages
+    if (err.code === 'ER_BAD_FIELD_ERROR') {
+      const error = new Error('Invalid column name in query');
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const error = new Error('Database query error');
+    error.statusCode = 500;
+    throw error;
   }
 }
 
